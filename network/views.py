@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.core.files.storage import default_storage
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -120,13 +121,23 @@ def following(request):
 
 
 def edit(request):
-    return render(request, "network/new_post.html", {
-
-    })
+    if request.method == "POST":
+        form = NewPost(request.POST)
+        content = form.data["content"]
+        default_storage.save(content)
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        content=request.GET.get("content")
+        form = NewPost({
+            "content": content
+        })
+        return render(request, "network/index.html")
 
 
 def like(request):
     pass
+
+
 
 # def like(request):
 #     if request.method == "POST":

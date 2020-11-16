@@ -19,5 +19,5 @@ like/<post-id> -> see if user is logged in
 //
 //     document.querySelectorAll('.like').forEach(button => {
 //         button.addEventListener('click', )
-    })
+//     })
 // ', function () => ('inbox'));
