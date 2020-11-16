@@ -1,0 +1,30 @@
+{% include "network/pagination.html" %}
+
+{% for post in all_posts %}
+    <div class="post-list">
+        <div class="creator">
+            <a class="nav-link" href="{% url 'profile' post.creator.id %}">
+                {{ post.creator }}
+            </a>
+        </div>
+        <div class="content">
+            {{ post.content }}
+        </div>
+        <div class="created-time">
+            {{ post.created }}
+        </div>
+        <div>
+            <button type="button" class="btn btn-outline-primary like" data-like="yes/no">
+                {% if user likes post.id %}
+                &#128077;
+                {% else %}
+                &#128078;
+                {% endif %}
+            </button>
+
+            &#128151; {{ post.likes.count }}
+        </div>
+    </div>
+{% endfor %}
+
+{% include "network/pagination.html" %}

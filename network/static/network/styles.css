@@ -1,0 +1,45 @@
+h1{
+    margin-left: 10px;
+}
+textarea {
+    height:30vh;
+    width: 100vh;
+    margin-left: 10px;
+}
+button {
+    margin-left: 10px;
+}
+.post-list {
+    border: 1px solid black;
+    padding:10px;
+    margin:10px;
+    font-family: "Comic Sans MS";
+
+}
+div .creator {
+    font-weight: bold;
+}
+div .content {
+    margin:10px;
+}
+div .created-time{
+    font-size: small;
+
+}
+ .profile-name {
+    text-align: center;
+    font-family: "Comic Sans MS";
+    font-size: 8vh;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+div .follow{
+    text-align: center;
+}
+div  .followers {
+ font-size: larger;
+}
+div .following {
+    font-size: larger;
+}

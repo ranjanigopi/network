@@ -1,0 +1,30 @@
+{% extends "network/layout.html" %}
+{% block body %}
+    <p class="profile-name">
+        <strong>{{ profile.username }}</strong>
+    </p>
+    <div class="follow">
+        <div class="followers">
+            Followers: {{ profile.follower.count  }}
+        </div>
+        <div class="following">
+            Following: {{ profile.following.count }}
+        </div>
+        {% if not profile.id is user.id %}
+            <form method="POST">
+                {% csrf_token %}
+                {% if not is_following %}
+                    <button type="submit" value="follow" name="action" class="btn btn-primary custom">
+                        Follow
+                    </button>
+                {% else %}
+                    <button type="submit" value="unfollow" name="action" class="btn btn-primary custom">
+                        Unfollow
+                    </button>
+                {% endif %}
+            </form>
+        {% endif %}
+    </div>
+    {% include "network/all_posts.html" %}
+
+{% endblock %}
