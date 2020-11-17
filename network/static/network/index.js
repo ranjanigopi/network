@@ -37,7 +37,7 @@ function editPost(id) {
 
     saveButton.onclick = function () {
         fetch(`/edit/${id}`, {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify({
                 content: textarea.value,
             })
@@ -55,8 +55,17 @@ function editPost(id) {
 }
 
 
-// function like(id) {
-//     fetch(`/like/${id}`, {
-//
-//     })
-// }
+function toggleLike(button, id, likes) {
+    fetch(`/like/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+            likes: !likes
+        })
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            button.innerHTML = button.getAttribute(`data-${likes ? "up" : "down"}-button`);
+            button.onclick = () => toggleLike(button, id, !likes);
+            document.getElementById(`post-like-count-${id}`).innerHTML = result.count;
+        })
+}

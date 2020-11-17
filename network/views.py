@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import Paginator
@@ -128,7 +128,7 @@ def edit_post(request, id):
     p = Posts.objects.get(id=id)
     if p.creator is not request.user:
         return HttpResponse(status=401)
-    if request.method == "POST":
+    if request.method == "PUT":
         data = json.loads(request.body)
         content = data.get("content")
         p.content = content
@@ -137,14 +137,18 @@ def edit_post(request, id):
     return HttpResponse(status=400)
 
 
-def like(request):
-    pass
+@csrf_exempt
+@login_required
+def like(request, post_id):
+    if request.method == "PUT":
+        user_likes = json.loads(request.body).get("likes")
 
-# def like(request):
-#     if request.method == "POST":
-#         action = request.POST.get("action")
-#         if action == "like":
-#             f = Like(post=post_id, liker=request.user)
-#             print(f)
-#         elif action == "umlike":
-#             Like.objects.filter(post=post_id, liker=request.user).delete()
+        if not user_likes:
+            Like.objects.filter(liker=request.user, post=post_id).delete()
+        else:
+            l = Like(liker=request.user, post_id=post_id)
+            l.save()
+        return JsonResponse({
+            "count": Posts.objects.get(id=post_id).likes.count()
+        })
+    return HttpResponse(status=400)

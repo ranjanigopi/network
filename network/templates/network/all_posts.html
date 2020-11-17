@@ -1,5 +1,6 @@
 {% include "network/pagination.html" %}
 {% load static %}
+{% load network_filters %}
 
 {% for post in all_posts %}
     <div class="post" id="post-{{ post.id }}">
@@ -14,21 +15,24 @@
         <div class="created-time">
             {{ post.created }}
         </div>
-        {% if user.id is post.creator.id %}
-            <div>
-                <button onclick="editPost({{ post.id }})">Edit</button>
-            </div>
-        {% endif %}
         <div>
-            <button type="button" class="btn btn-outline-primary like" data-like="yes/no">
-                {#                {% if user likes post.id %}#}
-                {#                &#128077;#}
-                {#                {% else %}#}
-                {#                &#128078;#}
-                {#                {% endif %}#}
-            </button>
-
-            &#128151; {{ post.likes.count }}
+            {% with liked=post.likes|user_likes:user up_button="&#128077;" down_button="&#128078;" %}
+                <button type="button" class="btn btn-outline-primary like"
+                        onclick="toggleLike(this, {{ post.id }}, {{ liked|yesno:"true,false" }})"
+                        data-up-button="{{ up_button }}"
+                        data-down-button="{{ down_button }}"
+                >
+                    {% if liked %}
+                        {{ down_button }}
+                    {% else %}
+                        {{ up_button }}
+                    {% endif %}
+                </button>
+            {% endwith %}
+            &#128151; <span id="post-like-count-{{ post.id }}">{{ post.likes.count }}</span>
+            {% if user.id is post.creator.id %}
+                <button class="btn btn-link" onclick="editPost({{ post.id }})">Edit</button>
+            {% endif %}
         </div>
     </div>
 {% endfor %}
