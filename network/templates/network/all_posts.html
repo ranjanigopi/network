@@ -16,19 +16,21 @@
             {{ post.created }}
         </div>
         <div>
-            {% with liked=post.likes|user_likes:user up_button="&#128077;" down_button="&#128078;" %}
-                <button type="button" class="btn btn-outline-primary like"
-                        onclick="toggleLike(this, {{ post.id }}, {{ liked|yesno:"true,false" }})"
-                        data-up-button="{{ up_button }}"
-                        data-down-button="{{ down_button }}"
-                >
-                    {% if liked %}
-                        {{ down_button }}
-                    {% else %}
-                        {{ up_button }}
-                    {% endif %}
-                </button>
-            {% endwith %}
+            {% if user.is_authenticated %}
+                {% with liked=post.likes|user_likes:user up_button="&#128077;" down_button="&#128078;" %}
+                    <button type="button" class="btn btn-outline-primary like"
+                            onclick="toggleLike(this, {{ post.id }}, {{ liked|yesno:"true,false" }})"
+                            data-up-button="{{ up_button }}"
+                            data-down-button="{{ down_button }}"
+                    >
+                        {% if liked %}
+                            {{ down_button }}
+                        {% else %}
+                            {{ up_button }}
+                        {% endif %}
+                    </button>
+                {% endwith %}
+            {% endif %}
             &#128151; <span id="post-like-count-{{ post.id }}">{{ post.likes.count }}</span>
             {% if user.id is post.creator.id %}
                 <button class="btn btn-link" onclick="editPost({{ post.id }})">Edit</button>
