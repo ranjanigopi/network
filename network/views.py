@@ -1,5 +1,4 @@
 from django.contrib.auth import authenticate, login, logout
-from django.core.files.storage import default_storage
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -7,6 +6,9 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 from .models import User, Posts, Follows, Like
 from .models import NewPost
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+import json
 
 
 def get_posts_in_page(request, posts):
@@ -120,24 +122,23 @@ def following(request):
     })
 
 
-def edit(request):
+@csrf_exempt
+@login_required
+def edit_post(request, id):
+    p = Posts.objects.get(id=id)
+    if p.creator is not request.user:
+        return HttpResponse(status=401)
     if request.method == "POST":
-        form = NewPost(request.POST)
-        content = form.data["content"]
-        default_storage.save(content)
-        return HttpResponseRedirect(reverse("index"))
-    else:
-        content=request.GET.get("content")
-        form = NewPost({
-            "content": content
-        })
-        return render(request, "network/index.html")
+        data = json.loads(request.body)
+        content = data.get("content")
+        p.content = content
+        p.save()
+        return HttpResponse(status=204)
+    return HttpResponse(status=400)
 
 
 def like(request):
     pass
-
-
 
 # def like(request):
 #     if request.method == "POST":

@@ -21,3 +21,42 @@ like/<post-id> -> see if user is logged in
 //         button.addEventListener('click', )
 //     })
 // ', function () => ('inbox'));
+
+
+function editPost(id) {
+    const post = document.getElementById(`post-${id}`);
+    const content = post.getElementsByClassName("content")[0];
+
+    const textarea = document.createElement("textarea");
+    textarea.value = content.innerHTML;
+
+    const saveButton = document.createElement("button");
+    saveButton.classList.add("btn", "btn-primary", "save");
+    saveButton.innerHTML = "Save";
+    saveButton.type = "button";
+
+    saveButton.onclick = function () {
+        fetch(`/edit/${id}`, {
+            method: "POST",
+            body: JSON.stringify({
+                content: textarea.value,
+            })
+        })
+            .then(() => {
+                content.innerHTML = textarea.value;
+                saveButton.remove();
+                textarea.remove();
+            })
+
+    }
+
+    post.append(textarea);
+    post.append(saveButton);
+}
+
+
+// function like(id) {
+//     fetch(`/like/${id}`, {
+//
+//     })
+// }

@@ -1,7 +1,8 @@
 {% include "network/pagination.html" %}
+{% load static %}
 
 {% for post in all_posts %}
-    <div class="post-list" xmlns="http://www.w3.org/1999/html">
+    <div class="post" id="post-{{ post.id }}">
         <div class="creator">
             <a class="nav-link" href="{% url 'profile' post.creator.id %}">
                 {{ post.creator }}
@@ -13,18 +14,18 @@
         <div class="created-time">
             {{ post.created }}
         </div>
-        {% if user is post.creator %}
-        <div>
-            <a class="nav-link" href="{% url 'edit' %}">Edit</a>
-        </div>
-        {%  endif %}
+        {% if user.id is post.creator.id %}
+            <div>
+                <button onclick="editPost({{ post.id }})">Edit</button>
+            </div>
+        {% endif %}
         <div>
             <button type="button" class="btn btn-outline-primary like" data-like="yes/no">
-{#                {% if user likes post.id %}#}
-{#                &#128077;#}
-{#                {% else %}#}
-{#                &#128078;#}
-{#                {% endif %}#}
+                {#                {% if user likes post.id %}#}
+                {#                &#128077;#}
+                {#                {% else %}#}
+                {#                &#128078;#}
+                {#                {% endif %}#}
             </button>
 
             &#128151; {{ post.likes.count }}
@@ -33,3 +34,4 @@
 {% endfor %}
 
 {% include "network/pagination.html" %}
+<script src="{% static "network/index.js" %}"></script>
