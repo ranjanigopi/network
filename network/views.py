@@ -10,6 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import json
 
+POSTS_ORDER='-created'
+
 
 def get_posts_in_page(request, posts):
     paginator = Paginator(posts, 10)
@@ -23,7 +25,7 @@ def is_following(follower, followee):
 
 
 def index(request):
-    posts = Posts.objects.all().order_by('-created')
+    posts = Posts.objects.all().order_by(POSTS_ORDER)
     return render(request, "network/index.html", {
         "all_posts": get_posts_in_page(request, posts)
     })
@@ -106,7 +108,7 @@ def profile(request, id):
             Follows.objects.filter(follower=request.user, followee=user_profile).delete()
 
     return render(request, "network/profile.html", {
-        "all_posts": get_posts_in_page(request, user_profile.posts.all()),
+        "all_posts": get_posts_in_page(request, user_profile.posts.all().order_by(POSTS_ORDER)),
         "profile": user_profile,
         "is_following": is_following(request.user, id)
     })
@@ -118,7 +120,7 @@ def following(request):
     for f in follows:
         all_posts = all_posts | Posts.objects.filter(creator=f.followee)
     return render(request, "network/following.html", {
-        "all_posts": get_posts_in_page(request, all_posts)
+        "all_posts": get_posts_in_page(request, all_posts.order_by(POSTS_ORDER))
     })
 
 

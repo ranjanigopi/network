@@ -12,7 +12,7 @@ class NewPost(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(NewPost, self).__init__(*args, **kwargs)
-        self.fields['content'].widget.attrs.update({'class': 'form-control max-width-50'})
+        self.fields['content'].widget.attrs.update({'class': 'form-control edit-post'})
 
 
 class User(AbstractUser):

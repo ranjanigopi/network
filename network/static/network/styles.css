@@ -1,54 +1,75 @@
-h1 {
-    margin-left: 10px;
+body {
+    font-family: "Comic Sans MS", cursive;
 }
 
-textarea {
-    height: 30vh;
-    width: 100vh;
-    margin-left: 10px;
+textarea.edit-post {
+    min-height: 300px;
+    width: 80vw;
+    resize: vertical;
+    margin-bottom: 10px;
 }
 
-button {
-    margin-left: 10px;
+.body {
+    margin: 0 10px;
 }
 
 .post {
     border: 1px solid black;
     padding: 10px;
-    margin: 10px;
-    font-family: "Comic Sans MS";
-
+    margin-bottom: 25px;
+    display: grid;
+    grid-template-areas:
+        "creator edit-button like-count like-button"
+        "created-time created-time created-time created-time"
+        "content content content content"
+        "edit-content edit-content edit-content edit-content";
+    grid-template-columns: 1fr auto auto auto;
+    grid-gap: 10px;
+    align-items: baseline;
 }
 
-div .creator {
+.post .edit-button {
+    grid-area: edit-button;
+}
+
+.post .like-count {
+    grid-area: like-count;
+}
+
+.post .like-button {
+    grid-area: like-button;
+}
+
+.post .creator {
+    grid-area: creator;
     font-weight: bold;
 }
 
-div .content {
-    margin: 10px;
+.post .created-time {
+    grid-area: created-time;
+    font-size: small;
 }
 
-div .created-time {
-    font-size: small;
+.post .content {
+    grid-area: content;
+}
 
+.post .edit-content {
+    grid-area: edit-content;
 }
 
 .profile-name {
     text-align: center;
-    font-family: "Comic Sans MS";
     font-size: 8vh;
     font-weight: bold;
     margin-bottom: 25px;
 }
 
-div .follow {
+.follow {
     text-align: center;
 }
 
-div .followers {
-    font-size: larger;
-}
-
-div .following {
+.follow .followers,
+.follow .following {
     font-size: larger;
 }
