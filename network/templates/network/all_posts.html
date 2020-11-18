@@ -10,7 +10,7 @@
             </a>
         </div>
         {% if user.id is post.creator.id %}
-            <button class="btn btn-link edit-button" onclick="editPost({{ post.id }})">Edit</button>
+            <button type="button" class="btn btn-link edit-button" onclick="editPost({{ post.id }})">Edit</button>
         {% endif %}
         <div class="like-count">
             &#128151; <span id="post-like-count-{{ post.id }}">{{ post.likes.count }}</span>
