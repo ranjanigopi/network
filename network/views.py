@@ -128,7 +128,7 @@ def following(request):
 @login_required
 def edit_post(request, id):
     p = Posts.objects.get(id=id)
-    if p.creator is not request.user:
+    if p.creator.id is not request.user.id:
         return HttpResponse(status=401)
     if request.method == "PUT":
         data = json.loads(request.body)
